@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateDailyMealPlanDto } from './dto/create-daily-meal-plan.dto';
 import { UpdateDailyMealPlanDto } from './dto/update-daily-meal-plan.dto';
+import { DailyMealPlan, DailyMealPlanDocument } from './entities/daily-meal-plan.schema';
 
 @Injectable()
 export class DailyMealPlanService {
-  create(createDailyMealPlanDto: CreateDailyMealPlanDto) {
-    return 'This action adds a new dailyMealPlan';
+  constructor(
+    @InjectModel(DailyMealPlan.name) private readonly dailyMealPlanModel: Model<DailyMealPlanDocument>,
+  ) {}
+
+  create(createDailyMealPlanDto: CreateDailyMealPlanDto): Promise<DailyMealPlan> {
+    const newDailyPlan = new this.dailyMealPlanModel(createDailyMealPlanDto);
+    return newDailyPlan.save();    
   }
 
-  findAll() {
-    return `This action returns all dailyMealPlan`;
+  findAll(): Promise<DailyMealPlan[]> {
+    return this.dailyMealPlanModel.find().exec();    
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} dailyMealPlan`;
+  findOne(id: string): Promise<DailyMealPlan | null> {
+    return this.dailyMealPlanModel.findById(id).exec();    
   }
 
-  update(id: number, updateDailyMealPlanDto: UpdateDailyMealPlanDto) {
-    return `This action updates a #${id} dailyMealPlan`;
+  update(id: string, updateDailyMealPlanDto: UpdateDailyMealPlanDto): Promise<DailyMealPlan | null> {
+    return this.dailyMealPlanModel.findByIdAndUpdate(id, updateDailyMealPlanDto, { new: true }).exec();    
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} dailyMealPlan`;
+  async remove(id: string): Promise<boolean> {
+    const deleted = await this.dailyMealPlanModel.findByIdAndDelete(id).exec();
+    return deleted !== null;
   }
 }

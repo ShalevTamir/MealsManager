@@ -1,1 +1,10 @@
-export class CreateMenuItemDto {}
+import { IsString, IsEnum } from 'class-validator';
+import { NutrientCategory } from 'src/common/entities/enums/nutrient-category.enum';
+
+export class CreateMenuItemDto {
+  @IsString()
+  name: string;
+
+  @IsEnum(NutrientCategory)
+  category: NutrientCategory;
+}
