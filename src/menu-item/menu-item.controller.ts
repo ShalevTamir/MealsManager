@@ -12,6 +12,11 @@ export class MenuItemController {
     return this.menuItemService.create(createMenuItemDto);
   }
 
+  @Post('bulk')
+  createBulk(@Body() createMenuItemDtos: CreateMenuItemDto[]) {
+    return this.menuItemService.createBulk(createMenuItemDtos);
+  }
+
   @Get()
   findAll() {
     return this.menuItemService.findAll();
@@ -19,16 +24,16 @@ export class MenuItemController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.menuItemService.findOne(+id);
+    return this.menuItemService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMenuItemDto: UpdateMenuItemDto) {
-    return this.menuItemService.update(+id, updateMenuItemDto);
+    return this.menuItemService.update(id, updateMenuItemDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.menuItemService.remove(+id);
+    return this.menuItemService.remove(id);
   }
 }

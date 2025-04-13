@@ -9,13 +9,13 @@ export class DailyMealPlan {
   @Prop({ required: true })
   date: Date;
 
-  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: true })
+  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: false, default: null })
   carb: MenuItem;
 
-  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: true })
+  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: false, default: null })
   protein: MenuItem;
 
-  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: true })
+  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: false, default: null  })
   extra: MenuItem;
 }
 

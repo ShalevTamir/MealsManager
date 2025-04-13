@@ -6,5 +6,5 @@ export class CreateMenuItemDto {
   name: string;
 
   @IsEnum(NutrientCategory)
-  category: NutrientCategory;
+  type: NutrientCategory;
 }

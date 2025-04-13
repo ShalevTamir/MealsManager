@@ -10,6 +10,11 @@ export class DailyMealPlanService {
   constructor(
     @InjectModel(DailyMealPlan.name) private readonly dailyMealPlanModel: Model<DailyMealPlanDocument>,
   ) {}
+  
+  createBulk(createDailyMealPlanDtos: CreateDailyMealPlanDto[]): Promise<DailyMealPlan[]> {
+    const newDailyPlans = createDailyMealPlanDtos.map(dto => new this.dailyMealPlanModel(dto));
+    return this.dailyMealPlanModel.insertMany(newDailyPlans);
+  }
 
   create(createDailyMealPlanDto: CreateDailyMealPlanDto): Promise<DailyMealPlan> {
     const newDailyPlan = new this.dailyMealPlanModel(createDailyMealPlanDto);

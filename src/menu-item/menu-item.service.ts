@@ -8,6 +8,11 @@ import { Model } from 'mongoose';
 @Injectable()
 export class MenuItemService {
   constructor(@InjectModel(MenuItem.name) private readonly menuItemModel: Model<MenuItemDocument>) {}
+  
+  createBulk(createMenuItemDtos: CreateMenuItemDto[]): Promise<MenuItem[]> {
+    const newMenuItems = createMenuItemDtos.map(dto => new this.menuItemModel(dto));
+    return this.menuItemModel.insertMany(newMenuItems);
+  }
 
   create(createMenuItemDto: CreateMenuItemDto): Promise<MenuItem> {
     const newMenuItem = new this.menuItemModel(createMenuItemDto);
@@ -26,7 +31,7 @@ export class MenuItemService {
     return this.menuItemModel.findByIdAndUpdate(id, updateMenuItemDto, { new: true }).exec();    
   }
 
-  async remove(id: number): Promise<boolean> {
+  async remove(id: string): Promise<boolean> {
     const deleted = await this.menuItemModel.findByIdAndDelete(id).exec();
     return deleted !== null
   }

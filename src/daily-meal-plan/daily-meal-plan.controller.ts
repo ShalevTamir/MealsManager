@@ -12,6 +12,11 @@ export class DailyMealPlanController {
     return this.dailyMealPlanService.create(createDailyMealPlanDto);
   }
 
+  @Post('bulk')
+  createBulk(@Body() createDailyMealPlanDtos: CreateDailyMealPlanDto[]) {
+    return this.dailyMealPlanService.createBulk(createDailyMealPlanDtos);
+  }
+
   @Get()
   findAll() {
     return this.dailyMealPlanService.findAll();
@@ -19,16 +24,16 @@ export class DailyMealPlanController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.dailyMealPlanService.findOne(+id);
+    return this.dailyMealPlanService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateDailyMealPlanDto: UpdateDailyMealPlanDto) {
-    return this.dailyMealPlanService.update(+id, updateDailyMealPlanDto);
+    return this.dailyMealPlanService.update(id, updateDailyMealPlanDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.dailyMealPlanService.remove(+id);
+    return this.dailyMealPlanService.remove(id);
   }
 }
