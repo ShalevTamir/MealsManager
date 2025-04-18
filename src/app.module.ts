@@ -9,7 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
   imports: [
     MenuItemModule,
     DailyMealPlanModule,
-    MongooseModule.forRoot('mongodb+srv://shalev:6GnDc8MW8y890mQr@cluster0.rjk3l.mongodb.net/meals')
+    MongooseModule.forRoot('mongodb+srv://shalev:1234@cluster0.rjk3l.mongodb.net/meals?retryWrites=true&w=majority&appName=Cluster0')
   ],
   controllers: [AppController],
   providers: [AppService],
