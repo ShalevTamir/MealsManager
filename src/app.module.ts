@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MenuItemModule } from './menu-item/menu-item.module';
 import { DailyMealPlanModule } from './daily-meal-plan/daily-meal-plan.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,7 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     DailyMealPlanModule,
     MongooseModule.forRoot('mongodb+srv://shalev:1234@cluster0.rjk3l.mongodb.net/meals?retryWrites=true&w=majority&appName=Cluster0')
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
