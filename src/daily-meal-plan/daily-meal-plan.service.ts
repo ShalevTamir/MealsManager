@@ -5,7 +5,6 @@ import { CreateDailyMealPlanDto } from './dto/create-daily-meal-plan.dto';
 import { UpdateDailyMealPlanDto } from './dto/update-daily-meal-plan.dto';
 import { DailyMealPlan, DailyMealPlanDocument, DailyMealPlanPopulated } from './entities/daily-meal-plan.schema';
 import { MenuItem } from 'src/menu-item/entities/menu-item.schema';
-import { Ref } from '@typegoose/typegoose';
 
 @Injectable()
 export class DailyMealPlanService {
@@ -46,7 +45,7 @@ export class DailyMealPlanService {
     const updatedMenuItems: MenuItem[] = mealPlanToUpdate.menuItems.filter(menuItem => menuItem.type !== updateDailyMealPlanDto.menuItemToAdd.type);
     updatedMenuItems.push(updateDailyMealPlanDto.menuItemToAdd);
     const menuItemsIds: Types.ObjectId[] = updatedMenuItems.map(menuItem => menuItem._id);
-    
+
     const updatedMealPlan: DailyMealPlan | null = await this.dailyMealPlanModel.findOneAndUpdate({ _id:  mealPlanToUpdate._id }, { menuItems: menuItemsIds }, { new: true }).exec();      
     return <DailyMealPlan>updatedMealPlan;
   }
