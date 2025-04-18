@@ -9,14 +9,8 @@ export class DailyMealPlan {
   @Prop({ required: true })
   date: Date;
 
-  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: false, default: null })
-  carb: MenuItem;
-
-  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: false, default: null })
-  protein: MenuItem;
-
-  @Prop({ type: Types.ObjectId, ref: 'MenuItem', required: false, default: null  })
-  extra: MenuItem;
+  @Prop({ type: [Types.ObjectId], required: true })
+  menuItems: MenuItem[];  
 }
 
 export const DailyMealPlanSchema = SchemaFactory.createForClass(DailyMealPlan);

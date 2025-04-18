@@ -9,29 +9,29 @@ import { Model } from 'mongoose';
 export class MenuItemService {
   constructor(@InjectModel(MenuItem.name) private readonly menuItemModel: Model<MenuItemDocument>) {}
   
-  createBulk(createMenuItemDtos: CreateMenuItemDto[]): Promise<MenuItem[]> {
+  public createBulk(createMenuItemDtos: CreateMenuItemDto[]): Promise<MenuItem[]> {
     const newMenuItems = createMenuItemDtos.map(dto => new this.menuItemModel(dto));
     return this.menuItemModel.insertMany(newMenuItems);
   }
 
-  create(createMenuItemDto: CreateMenuItemDto): Promise<MenuItem> {
+  public create(createMenuItemDto: CreateMenuItemDto): Promise<MenuItem> {
     const newMenuItem = new this.menuItemModel(createMenuItemDto);
     return newMenuItem.save();    
   }
 
-  findAll(): Promise<MenuItem[]> {
+  public findAll(): Promise<MenuItem[]> {
     return this.menuItemModel.find().exec();    
   }
 
-  findOne(id: string): Promise<MenuItem | null> {
+  public findOne(id: string): Promise<MenuItem | null> {
     return this.menuItemModel.findById(id).exec();    
   }
 
-  update(id: string, updateMenuItemDto: UpdateMenuItemDto): Promise<MenuItem | null> {
+  public update(id: string, updateMenuItemDto: UpdateMenuItemDto): Promise<MenuItem | null> {
     return this.menuItemModel.findByIdAndUpdate(id, updateMenuItemDto, { new: true }).exec();    
   }
 
-  async remove(id: string): Promise<boolean> {
+  public async remove(id: string): Promise<boolean> {
     const deleted = await this.menuItemModel.findByIdAndDelete(id).exec();
     return deleted !== null
   }

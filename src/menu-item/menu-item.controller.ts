@@ -8,32 +8,32 @@ export class MenuItemController {
   constructor(private readonly menuItemService: MenuItemService) {}
 
   @Post()
-  create(@Body() createMenuItemDto: CreateMenuItemDto) {
+  public create(@Body() createMenuItemDto: CreateMenuItemDto): Promise<CreateMenuItemDto> {
     return this.menuItemService.create(createMenuItemDto);
   }
 
   @Post('bulk')
-  createBulk(@Body() createMenuItemDtos: CreateMenuItemDto[]) {
+  public createBulk(@Body() createMenuItemDtos: CreateMenuItemDto[]): Promise<CreateMenuItemDto[]> {
     return this.menuItemService.createBulk(createMenuItemDtos);
   }
 
   @Get()
-  findAll() {
+  public findAll(): Promise<CreateMenuItemDto[]> {
     return this.menuItemService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  public findOne(@Param('id') id: string): Promise<CreateMenuItemDto | null> {
     return this.menuItemService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMenuItemDto: UpdateMenuItemDto) {
+  public update(@Param('id') id: string, @Body() updateMenuItemDto: UpdateMenuItemDto): Promise<CreateMenuItemDto | null> {
     return this.menuItemService.update(id, updateMenuItemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  public remove(@Param('id') id: string): Promise<boolean> {
     return this.menuItemService.remove(id);
   }
 }

@@ -11,29 +11,38 @@ export class DailyMealPlanService {
     @InjectModel(DailyMealPlan.name) private readonly dailyMealPlanModel: Model<DailyMealPlanDocument>,
   ) {}
   
-  createBulk(createDailyMealPlanDtos: CreateDailyMealPlanDto[]): Promise<DailyMealPlan[]> {
+  public createBulk(createDailyMealPlanDtos: CreateDailyMealPlanDto[]): Promise<DailyMealPlan[]> {
     const newDailyPlans = createDailyMealPlanDtos.map(dto => new this.dailyMealPlanModel(dto));
     return this.dailyMealPlanModel.insertMany(newDailyPlans);
   }
 
-  create(createDailyMealPlanDto: CreateDailyMealPlanDto): Promise<DailyMealPlan> {
+  public create(createDailyMealPlanDto: CreateDailyMealPlanDto): Promise<DailyMealPlan> {
     const newDailyPlan = new this.dailyMealPlanModel(createDailyMealPlanDto);
     return newDailyPlan.save();    
   }
 
-  findAll(): Promise<DailyMealPlan[]> {
+  public findAll(): Promise<DailyMealPlan[]> {
     return this.dailyMealPlanModel.find().exec();    
   }
 
-  findOne(id: string): Promise<DailyMealPlan | null> {
+  public findOne(id: string): Promise<DailyMealPlan | null> {
     return this.dailyMealPlanModel.findById(id).exec();    
   }
 
-  update(id: string, updateDailyMealPlanDto: UpdateDailyMealPlanDto): Promise<DailyMealPlan | null> {
+  public findByDateRange(startDate: Date, endDate: Date): Promise<DailyMealPlan[]> {
+    return this.dailyMealPlanModel.find({
+      date: {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      },
+    }).exec();
+  }
+
+  public update(id: string, updateDailyMealPlanDto: UpdateDailyMealPlanDto): Promise<DailyMealPlan | null> {
     return this.dailyMealPlanModel.findByIdAndUpdate(id, updateDailyMealPlanDto, { new: true }).exec();    
   }
 
-  async remove(id: string): Promise<boolean> {
+  public async remove(id: string): Promise<boolean> {
     const deleted = await this.dailyMealPlanModel.findByIdAndDelete(id).exec();
     return deleted !== null;
   }

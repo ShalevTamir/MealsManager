@@ -1,4 +1,10 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateDailyMealPlanDto } from './create-daily-meal-plan.dto';
+import { IsArray, IsDateString, IsMongoId } from 'class-validator';
 
-export class UpdateDailyMealPlanDto extends PartialType(CreateDailyMealPlanDto) {}
+export class UpdateDailyMealPlanDto {
+    @IsDateString()
+    date: string;
+
+    @IsArray()
+    @IsMongoId({ each: true })
+    menuItemIds: string[];
+}
