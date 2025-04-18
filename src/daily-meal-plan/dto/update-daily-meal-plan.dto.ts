@@ -1,10 +1,11 @@
-import { IsArray, IsDateString, IsMongoId } from 'class-validator';
+import { IsArray, IsDateString, IsMongoId, IsNotEmpty } from 'class-validator';
+import { Types } from 'mongoose';
 
 export class UpdateDailyMealPlanDto {
     @IsDateString()
     date: string;
-
+    
     @IsArray()
     @IsMongoId({ each: true })
-    menuItemIds: string[];
+    menuItems: Types.ObjectId[];
 }
