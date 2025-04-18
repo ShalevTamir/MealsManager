@@ -7,5 +7,5 @@ export class CreateDailyMealPlanDto {
 
   @IsArray()
   @IsMongoId({ each: true })
-  menuItemIds: Types.ObjectId[];
+  menuItemIds?: Types.ObjectId[];
 }

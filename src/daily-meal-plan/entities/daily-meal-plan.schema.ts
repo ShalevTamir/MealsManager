@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { MenuItem } from 'src/menu-item/entities/menu-item.schema';
 
 export type DailyMealPlanDocument = DailyMealPlan & Document;
 
@@ -15,3 +16,7 @@ export class DailyMealPlan {
 }
 
 export const DailyMealPlanSchema = SchemaFactory.createForClass(DailyMealPlan);
+
+export type DailyMealPlanPopulated = Omit<DailyMealPlan, 'menuItems'> & {
+  menuItems: MenuItem[];
+};
