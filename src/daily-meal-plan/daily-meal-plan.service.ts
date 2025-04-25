@@ -30,7 +30,7 @@ export class DailyMealPlanService {
     return this.dailyMealPlanModel.findOne({ date }).populate<{ menuItems: MenuItem[] }>("menuItems").exec() as Promise<DailyMealPlanPopulated | null>;    
   }
 
-  public findByDateRange(startDate: Date, endDate: Date): Promise<DailyMealPlanPopulated[]> {
+  public findByDateRange(startDate: string, endDate: string): Promise<DailyMealPlanPopulated[]> {    
     return this.dailyMealPlanModel.find({
       date: {
         $gte: new Date(startDate),

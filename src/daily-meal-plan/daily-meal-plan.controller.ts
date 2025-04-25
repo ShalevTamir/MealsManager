@@ -3,7 +3,6 @@ import { DailyMealPlanService } from './daily-meal-plan.service';
 import { CreateDailyMealPlanDto } from './dto/create-daily-meal-plan.dto';
 import { UpdateDailyMealPlanDto } from './dto/update-daily-meal-plan.dto';
 import { DailyMealPlan, DailyMealPlanPopulated } from './entities/daily-meal-plan.schema';
-import { UpdateResult } from 'mongoose';
 
 @Controller('daily-meal-plan')
 export class DailyMealPlanController {
@@ -21,7 +20,13 @@ export class DailyMealPlanController {
 
   @Get()
   public findAll(): Promise<DailyMealPlanPopulated[]> {
+    console.log('findAll called');
     return this.dailyMealPlanService.findAll();
+  }
+  
+  @Get('/date-range')
+  public findByDateRange(@Query('startDate') startDate: string, @Query('endDate') endDate: string): Promise<DailyMealPlanPopulated[]> {    
+    return this.dailyMealPlanService.findByDateRange(startDate, endDate);
   }
 
   @Get(':date')
@@ -29,10 +34,6 @@ export class DailyMealPlanController {
     return this.dailyMealPlanService.findByDate(date);
   }
 
-  @Get('date-range')
-  public findByDateRange(@Query('startDate') startDate: Date, @Query('endDate') endDate: Date): Promise<DailyMealPlanPopulated[]> {
-    return this.dailyMealPlanService.findByDateRange(startDate, endDate);
-  }
 
   @Patch()
   public update(@Body() updateDailyMealPlanDto: UpdateDailyMealPlanDto): Promise<DailyMealPlan> {
