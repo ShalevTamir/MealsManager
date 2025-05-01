@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId, Types, UpdateResult } from 'mongoose';
 import { CreateDailyMealPlanDto } from './dto/create-daily-meal-plan.dto';
 import { UpdateDailyMealPlanDto } from './dto/update-daily-meal-plan.dto';
 import { DailyMealPlan, DailyMealPlanDocument, DailyMealPlanPopulated } from './entities/daily-meal-plan.schema';
 import { MenuItem } from 'src/menu-item/entities/menu-item.schema';
+import { RemoveMenuItemDto } from './dto/remove-menu-item.dto';
 
 @Injectable()
 export class DailyMealPlanService {
@@ -47,6 +48,16 @@ export class DailyMealPlanService {
     const menuItemsIds: Types.ObjectId[] = updatedMenuItems.map(menuItem => menuItem._id);
 
     const updatedMealPlan: DailyMealPlan | null = await this.dailyMealPlanModel.findOneAndUpdate({ _id:  mealPlanToUpdate._id }, { menuItems: menuItemsIds }, { new: true }).exec();      
+    return <DailyMealPlan>updatedMealPlan;
+  }
+
+  public async removeMenuItem(removeMenuItemDto: RemoveMenuItemDto): Promise<DailyMealPlan> {
+    const mealPlanToUpdate: DailyMealPlan | null = await this.dailyMealPlanModel.findOne({ date: removeMenuItemDto.date }).exec();
+    if (mealPlanToUpdate == null) {
+      throw new BadRequestException('Meal plan not found');
+    }
+    const updatedMenuItemIds: Types.ObjectId[] = mealPlanToUpdate.menuItems.filter(menuItem => menuItem.toHexString() !== removeMenuItemDto.menuItemId);
+    const updatedMealPlan: DailyMealPlan | null = await this.dailyMealPlanModel.findByIdAndUpdate(mealPlanToUpdate._id, { menuItems: updatedMenuItemIds }, { new: true }).exec();
     return <DailyMealPlan>updatedMealPlan;
   }
 

@@ -3,6 +3,7 @@ import { DailyMealPlanService } from './daily-meal-plan.service';
 import { CreateDailyMealPlanDto } from './dto/create-daily-meal-plan.dto';
 import { UpdateDailyMealPlanDto } from './dto/update-daily-meal-plan.dto';
 import { DailyMealPlan, DailyMealPlanPopulated } from './entities/daily-meal-plan.schema';
+import { RemoveMenuItemDto } from './dto/remove-menu-item.dto';
 
 @Controller('daily-meal-plan')
 export class DailyMealPlanController {
@@ -35,9 +36,14 @@ export class DailyMealPlanController {
   }
 
 
-  @Patch()
+  @Patch('edit-menu-item')
   public update(@Body() updateDailyMealPlanDto: UpdateDailyMealPlanDto): Promise<DailyMealPlan> {
     return this.dailyMealPlanService.update(updateDailyMealPlanDto);
+  }
+
+  @Patch('remove-menu-item') 
+  public removeMenuItem(@Body() removeMenuItemDto: RemoveMenuItemDto): Promise<DailyMealPlan> {
+    return this.dailyMealPlanService.removeMenuItem(removeMenuItemDto);
   }
 
   @Delete(':id')
