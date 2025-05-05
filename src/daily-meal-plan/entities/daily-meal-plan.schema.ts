@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
-import { MenuItem } from 'src/menu-item/entities/menu-item.schema';
+import { Document, PopulateOptions, Types } from 'mongoose';
+import { MenuItemEntry, MenuItemEntryPopulated } from 'src/menu-item/entities/menu-item-entry.schema';
 
 export type DailyMealPlanDocument = DailyMealPlan & Document;
 
@@ -11,12 +11,18 @@ export class DailyMealPlan {
   @Prop({ required: true })
   date: Date;
 
-  @Prop({ type: [{type: Types.ObjectId, ref: 'MenuItem'}], required: false, default: [] })
-  menuItems: Types.ObjectId[] 
+  @Prop({ required: false, default: [] })
+  menuItemEntries: MenuItemEntry[] 
 }
 
 export const DailyMealPlanSchema = SchemaFactory.createForClass(DailyMealPlan);
 
-export type DailyMealPlanPopulated = Omit<DailyMealPlan, 'menuItems'> & {
-  menuItems: MenuItem[];
+export type DailyMealPlanPopulated = Omit<DailyMealPlan, 'menuItemEntries'> & {
+  menuItemEntries: MenuItemEntryPopulated[];
 };
+
+export type MealPlanPopulateType = {
+  menuItemEntries: MenuItemEntryPopulated[];
+};
+
+export const mealPlanPopulateArgs: PopulateOptions = { path: 'menuItemEntries.menuItem', model: 'MenuItem' };

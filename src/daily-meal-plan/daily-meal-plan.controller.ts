@@ -21,7 +21,6 @@ export class DailyMealPlanController {
 
   @Get()
   public findAll(): Promise<DailyMealPlanPopulated[]> {
-    console.log('findAll called');
     return this.dailyMealPlanService.findAll();
   }
   
@@ -36,12 +35,12 @@ export class DailyMealPlanController {
   }
 
 
-  @Patch('edit-menu-item')
+  @Patch('edit-entry')
   public update(@Body() updateDailyMealPlanDto: UpdateDailyMealPlanDto): Promise<DailyMealPlan> {
     return this.dailyMealPlanService.update(updateDailyMealPlanDto);
   }
 
-  @Patch('remove-menu-item') 
+  @Patch('remove-entry') 
   public removeMenuItem(@Body() removeMenuItemDto: RemoveMenuItemDto): Promise<DailyMealPlan> {
     return this.dailyMealPlanService.removeMenuItem(removeMenuItemDto);
   }
