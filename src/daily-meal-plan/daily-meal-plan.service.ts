@@ -44,8 +44,8 @@ export class DailyMealPlanService {
   public async update(updateDailyMealPlanDto: UpdateDailyMealPlanDto): Promise<DailyMealPlan> {
     const mealPlanToUpdate: DailyMealPlanPopulated = await this.findOrCreate(updateDailyMealPlanDto.date);        
 
-    const populatedEntries: MenuItemEntryPopulated[] = mealPlanToUpdate.menuItemEntries.filter(menuItemEntry => menuItemEntry.menuItem.type !== updateDailyMealPlanDto.menuItemToAdd.type);
-    populatedEntries.push({ menuItem: new MenuItem(updateDailyMealPlanDto.menuItemToAdd), isReady: DEFAULT_IS_READY_VALUE });
+    const populatedEntries: MenuItemEntryPopulated[] = mealPlanToUpdate.menuItemEntries.filter(menuItemEntry => menuItemEntry.menuItem.type !== updateDailyMealPlanDto.editedEntry.menuItem.type);
+    populatedEntries.push({ menuItem: new MenuItem(updateDailyMealPlanDto.editedEntry.menuItem), isReady: updateDailyMealPlanDto.editedEntry.isReady });
     const updatedMenuItems: MenuItemEntry[] = populatedEntries.map(populatedEntry => { return { isReady: populatedEntry.isReady, menuItem: populatedEntry.menuItem._id } });
     const updatedMealPlan: DailyMealPlan | null = await this.dailyMealPlanModel.findOneAndUpdate({ _id:  mealPlanToUpdate._id }, { menuItemEntries: updatedMenuItems }, { new: true }).exec();      
     return <DailyMealPlan>updatedMealPlan;

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { NutrientCategory } from 'src/common/entities/enums/nutrient-category.enum';
-import { MenuItemDto } from 'src/daily-meal-plan/dto/menu-item-dto.class';
+import { MenuItemDto } from 'src/daily-meal-plan/dto/menu-item.dto';
 
 export type MenuItemDocument = MenuItem & Document;
 
