@@ -7,6 +7,8 @@ export type ProfileDocument = Profile & Document;
 
 @Schema()
 export class Profile {
+    _id: Types.ObjectId;
+
     @Prop({ required: true })
     username: string;
 
@@ -22,7 +24,25 @@ export class Profile {
 
 export const ProfileSchema = SchemaFactory.createForClass(Profile);
 
+export type ProfilePopulateType = {
+    mealPlans: DailyMealPlanPopulated[];
+    menuItems: MenuItem[];
+};
 export type ProfilePopulated = Omit<Profile, 'mealPlans' | 'menuItems'> & {
     mealPlans: DailyMealPlanPopulated[];
     menuItems: MenuItem[];
+};
+
+export type ProfileMenuItemsPopulateType = {
+    menuItems: MenuItem[];
+};
+export type ProfileMenuItemsPopulated = Omit<Profile, 'menuItems'> & {
+    menuItems: MenuItem[];
+};
+
+export type ProfileMealPlansPopulateType = {
+    mealPlans: DailyMealPlanPopulated[];
+};
+export type ProfileMealPlansPopulated = Omit<Profile, 'mealPlans'> & {
+    mealPlans: DailyMealPlanPopulated[];
 };

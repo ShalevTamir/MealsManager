@@ -1,13 +1,16 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Profile, ProfileDocument } from "./entities/profile.schema";
-import { Model } from "mongoose";
+import { Model, UpdateQuery } from "mongoose";
 import { CreateProfileDto } from "./dto/create-profile.dto";
+import { UpdateProfileDto } from "./dto/update-profile.dto";
+import { ProfileQueryService } from "./profile-query.service";
 
 @Injectable()
 export class ProfileService {
     constructor(
         @InjectModel(Profile.name) private readonly profileModel: Model<ProfileDocument>,
+        private readonly profileQueryService: ProfileQueryService
     ) {}
 
     public create(createProfileDto: CreateProfileDto): Promise<Profile> {
@@ -17,5 +20,22 @@ export class ProfileService {
 
     public findAll(): Promise<Profile[]> {
         return this.profileModel.find().exec();
+    }
+
+    public async findByUsername(username: string): Promise<Profile> {
+        const profile: Profile | null = await this.profileQueryService.findByUsername(username).exec();
+        if (profile == null) {
+            throw new NotFoundException("Profile not found");
+        }
+        return profile;
+    }
+
+    public async update(updateProfileDto: UpdateProfileDto): Promise<Profile> {        
+        const profileToUpdate: Profile = await this.findByUsername(updateProfileDto.username);
+        const proprtiesToUpdate: UpdateQuery<ProfileDocument> = {
+            
+        }
+        this.profileModel.findOneAndUpdate({ _id: profileToUpdate._id }, )
+       
     }
 }
