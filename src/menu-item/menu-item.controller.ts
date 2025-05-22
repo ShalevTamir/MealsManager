@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { MenuItemService } from './menu-item.service';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
+import { ProfileUsername } from 'src/profile/decorators/profile-username.decorator';
 
 @Controller('menu-item')
 export class MenuItemController {
@@ -18,8 +19,8 @@ export class MenuItemController {
   }
 
   @Get()
-  public findAll(): Promise<CreateMenuItemDto[]> {
-    return this.menuItemService.findAll();
+  public findAll(@ProfileUsername() profileUsername): Promise<CreateMenuItemDto[]> {
+    return this.menuItemService.findAll(profileUsername);
   }
 
   @Get(':id')

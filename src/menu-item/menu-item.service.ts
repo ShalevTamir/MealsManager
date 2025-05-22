@@ -1,13 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { MenuItem, MenuItemDocument } from './entities/menu-item.schema';
 import { Model } from 'mongoose';
+import { Profile, ProfileDocument, ProfileMenuItemsPopulated, ProfileMenuItemsPopulateType } from 'src/profile/entities/profile.schema';
+import { ProfileService } from 'src/profile/profile.service';
 
 @Injectable()
 export class MenuItemService {
-  constructor(@InjectModel(MenuItem.name) private readonly menuItemModel: Model<MenuItemDocument>) {}
+  constructor(
+    @InjectModel(MenuItem.name) private readonly menuItemModel: Model<MenuItemDocument>,
+    @InjectModel(Profile.name) private readonly profileModel: Model<ProfileDocument>,    
+  ) {}
   
   public createBulk(createMenuItemDtos: CreateMenuItemDto[]): Promise<MenuItem[]> {
     const newMenuItems = createMenuItemDtos.map(dto => new this.menuItemModel(dto));
@@ -19,8 +24,16 @@ export class MenuItemService {
     return newMenuItem.save();    
   }
 
-  public findAll(): Promise<MenuItem[]> {
-    return this.menuItemModel.find().exec();    
+  public async findAll(profileUsername: string): Promise<MenuItem[]> {    
+    const profile: ProfileMenuItemsPopulated | null =  await this.profileModel
+      .findOne({ username: profileUsername })
+      .populate<ProfileMenuItemsPopulateType>('menuItems')
+      .exec();
+    if (profile == null) {
+      throw new NotFoundException('Profile not found');
+    }
+
+    return profile.menuItems as MenuItem[];    
   }
 
   public findOne(id: string): Promise<MenuItem | null> {
